@@ -12,13 +12,12 @@ import (
 func main() {
 
 	vars := helper.ProcessArguments(os.Args)
-	if (vars["profile"] == "prod") {
-		beego.RunMode = "prod"
-		beego.ParseConfig()
-		beego.Info("Logging at : ", helper.String("logfile"))
-	}
-	models.Orm = orm.NewOrm()
+	beego.Info(vars)
+	beego.RunMode = vars["profile"]
 	beego.Info("Run mode is ", beego.RunMode)
+	beego.ParseConfig()
+	beego.Info("Logging at : ", helper.String("logfile"))
+	models.Orm = orm.NewOrm()
 	beego.SetLogger("file", helper.String("logfile"))
 	beego.Run(helper.String("serverhost") + ":" + helper.String("serverport"))
 }
