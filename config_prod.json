@@ -1,0 +1,10 @@
+{
+    "LogFileLocation": "/Users/parth.mudgal/log/hopin.log",
+    "Database": {
+        "Host": "localhost",
+        "Port": 3306,
+        "Password": "",
+        "User": "root",
+        "Database": "hopin"
+    }
+}
