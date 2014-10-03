@@ -5,12 +5,20 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/artpar/hopin/models"
 	"github.com/astaxie/beego/orm"
+	"os"
+	"github.com/artpar/hopin/helper"
 )
 
 func main() {
-	beego.Info("Logging at : ", beego.AppConfig.String("logfile"))
-	beego.SetLogger("file", beego.AppConfig.String("logfile"))
-	models.Orm = orm.NewOrm()
-	beego.Run(beego.AppConfig.String("serverhost") + ":" + beego.AppConfig.String("serverport"))
-}
 
+	vars := helper.ProcessArguments(os.Args)
+	if (vars["profile"] == "prod") {
+		beego.RunMode = "prod"
+		beego.ParseConfig()
+		beego.Info("Logging at : ", helper.String("logfile"))
+	}
+	models.Orm = orm.NewOrm()
+	beego.Info("Run mode is ", beego.RunMode)
+	beego.SetLogger("file", helper.String("logfile"))
+	beego.Run(helper.String("serverhost") + ":" + helper.String("serverport"))
+}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"github.com/astaxie/beego"
 )
 
 type Configuration struct {
@@ -39,6 +40,11 @@ func GetConfiguration(env string) Configuration {
 
 var argumentMap map[uint8]string = map[uint8]string {
 	'P': "profile",
+}
+
+func String(name string) string {
+	val, _ := beego.GetConfig("string", name)
+	return val.(string)
 }
 
 func ProcessArguments(args []string) map[string]string {
