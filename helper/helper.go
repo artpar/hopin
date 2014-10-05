@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 	"github.com/astaxie/beego"
+	"net/http"
+	"io/ioutil"
 )
 
 type Configuration struct {
@@ -42,9 +44,44 @@ var argumentMap map[uint8]string = map[uint8]string {
 	'P': "profile",
 }
 
+func MapArrayToMapString(vals map[string][]string) map[string]string {
+	ret := make(map[string]string)
+	for key, val := range vals {
+		ret[key] = val[0]
+	}
+	return ret
+}
+
 func String(name string) string {
 	val, _ := beego.GetConfig("string", name)
 	return val.(string)
+}
+
+func GooglePlacesAutocompleteApi(requestParamMap map[string]string) map[string]interface{} {
+	requestParamString := ""
+	for key, val := range requestParamMap {
+		requestParamString += key+"="+val+"&"
+	}
+	requestParamString += "key="+GOOGLE_PLACES_API_KEY
+	url := "https://maps.googleapis.com/maps/api/place/autocomplete/json?" + requestParamString
+	return JsonUrlToMap(url)
+}
+
+func GetJson(url string) []byte {
+	resp, err := http.Get(url)
+	if err != nil {
+		beego.Error("error while fetching places ", err)
+	}
+	bytes, err := ioutil.ReadAll(resp.Body)
+	return bytes
+}
+
+func JsonUrlToMap(url string) map[string]interface{} {
+	dec := make(map[string]interface{})
+	bytes := GetJson(url)
+	//	beego.Info("data ", string(bytes))
+	json.Unmarshal(bytes, &dec)
+	return dec
 }
 
 func ProcessArguments(args []string) map[string]string {
@@ -63,3 +100,5 @@ func ProcessArguments(args []string) map[string]string {
 	}
 	return argMap
 }
+
+

@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-type Ride struct {
+type Traveller struct {
 	Id          int64
 	UserId      int
 	From        string
@@ -22,17 +22,18 @@ type Ride struct {
 }
 
 func init() {
-	orm.RegisterModel(new(Ride))
-	beego.Info("Added model Ride")
+	// Need to register model in init
+	orm.RegisterModel(new(Traveller))
+	beego.Info("Added model Traveller")
 }
 
-func AddRide(r Ride) Ride {
+func AddTraveller(r Traveller) Traveller {
 	Orm.Insert(&r)
 	return r
 }
 
-func GetRideById(id int64) Ride {
-	r := Ride{Id:id}
+func GetTravellerById(id int64) Traveller {
+	r := Traveller{Id:id}
 	Orm.Read(&r)
 	return r
 }

@@ -2,32 +2,32 @@ package controllers
 
 import (
 	"github.com/artpar/hopin/models"
-	"github.com/astaxie/beego")
+	"github.com/astaxie/beego"
+)
 
-type RideController struct {
+type TravellerController struct {
 	beego.Controller
 }
 
-func (this *RideController) Get() {
+func (this *TravellerController) Get() {
 	id, err := this.GetInt("id")
 	if err != nil {
 		this.Data["json"] = "invalid id"
 
 	}else {
-		this.Data["json"] = models.GetRideById(id)
+		this.Data["json"] = models.GetTravellerById(id)
 	}
 	this.ServeJson()
 
 }
 
-func (this *RideController) Post() {
+func (this *TravellerController) Post() {
 
 	people, err := this.GetInt("people")
 	if err != nil {
 		beego.Info("Bad integer for people", this.GetString("people"))
 		this.Data["json"] = "Invalid number of people"
 		this.ServeJson()
-		return;
 	}
 
 	user := models.GetUserByEmail(this.GetString("email"))
@@ -37,7 +37,7 @@ func (this *RideController) Post() {
 		return;
 	}
 
-	ride := models.Ride{
+	traveller := models.Traveller{
 		From: this.GetString("from"),
 		To: this.GetString("to"),
 		FromPlaceId: this.GetString("fromPlaceId"),
@@ -47,17 +47,19 @@ func (this *RideController) Post() {
 		EndTime: this.GetString("endTime"),
 		People: people,
 	}
-	fromPlace := models.GooglePlaceDetailApi(ride.FromPlaceId)
-	ride.FromLat = fromPlace.Lat
-	ride.FromLon = fromPlace.Lng
-
-	toPlace := models.GooglePlaceDetailApi(ride.ToPlaceId)
-	ride.ToLat = toPlace.Lat
-	ride.ToLon = toPlace.Lng
 
 
-	beego.Info("Ride ", ride)
-	ride = models.AddRide(ride)
-	this.Data["json"] = ride
+
+	fromPlace := models.GooglePlaceDetailApi(traveller.FromPlaceId)
+	traveller.FromLat = fromPlace.Lat
+	traveller.FromLon = fromPlace.Lng
+
+	toPlace := models.GooglePlaceDetailApi(traveller.ToPlaceId)
+	traveller.ToLat = toPlace.Lat
+	traveller.ToLon = toPlace.Lng
+
+	beego.Info("Traveller ", traveller)
+	traveller = models.AddTraveller(traveller)
+	this.Data["json"] = traveller
 	this.ServeJson()
 }
