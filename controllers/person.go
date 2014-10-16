@@ -18,6 +18,9 @@ func (this *PersonController) Get() {
 	this.ServeJson()
 }
 
+// Todo: implement the method to get a single travel of a user by id
+// Todo: Implement the table to store user request for other travels and accept and reject status
+
 func (this *PersonController) Feed() {
 	email := this.GetString("email")
 
