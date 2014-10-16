@@ -21,6 +21,14 @@ func UpdateUser(p Person) {
 	Orm.Update(&p)
 }
 
+func GetUserTravels(user Person) []Travel {
+	var travellers []Travel
+	Orm.QueryTable("travel").Filter("user_id", user.Id).All(&travellers)
+	return travellers
+}
+
+
+
 func GetUserByEmail(email string) Person {
 	p := Person{Email: email}
 	Orm.Read(&p, "Email")

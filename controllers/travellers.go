@@ -37,7 +37,7 @@ func (this *TravellerController) Post() {
 		return;
 	}
 
-	traveller := models.Traveller{
+	traveller := models.Travel{
 		From: this.GetString("from"),
 		To: this.GetString("to"),
 		FromPlaceId: this.GetString("fromPlaceId"),

@@ -5,7 +5,7 @@ import (
 	"github.com/astaxie/beego/orm"
 )
 
-type Traveller struct {
+type Travel struct {
 	Id          int64
 	UserId      int
 	From        string
@@ -23,17 +23,17 @@ type Traveller struct {
 
 func init() {
 	// Need to register model in init
-	orm.RegisterModel(new(Traveller))
+	orm.RegisterModel(new(Travel))
 	beego.Info("Added model Traveller")
 }
 
-func AddTraveller(r Traveller) Traveller {
+func AddTraveller(r Travel) Travel {
 	Orm.Insert(&r)
 	return r
 }
 
-func GetTravellerById(id int64) Traveller {
-	r := Traveller{Id:id}
+func GetTravellerById(id int64) Travel {
+	r := Travel{Id:id}
 	Orm.Read(&r)
 	return r
 }
