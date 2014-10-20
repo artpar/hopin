@@ -12,7 +12,7 @@ type PlacesController struct {
 func (this *PlacesController) Get() {
 	requestParamMap := helper.MapArrayToMapString((map[string][]string)(this.Input()))
 	data := helper.GooglePlacesAutocompleteApi(requestParamMap)
-	beego.Info("response", data)
+//	beego.Info("response", data)
 	this.Data["json"] = data;
 	this.ServeJson()
 }

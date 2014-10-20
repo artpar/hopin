@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/artpar/hopin/models"
 	"github.com/astaxie/beego"
+	"time"
 )
 
 type TravellerController struct {
@@ -15,7 +16,7 @@ func (this *TravellerController) Get() {
 		this.Data["json"] = "invalid id"
 
 	}else {
-		this.Data["json"] = models.GetTravellerById(id)
+		this.Data["json"] = models.GetTravelById(id)
 	}
 	this.ServeJson()
 
@@ -37,14 +38,25 @@ func (this *TravellerController) Post() {
 		return;
 	}
 
+	startTime, er := time.Parse(models.TimeFormat, this.GetString("startTime"))
+	if er != nil {
+		beego.Info("Failed to parse time", this.GetString("startTime"))
+	}
+
+	endTime, er := time.Parse(models.TimeFormat, this.GetString("startTime"))
+	if er != nil {
+		beego.Info("Failed to parse time", this.GetString("endTime"))
+	}
+
+
 	traveller := models.Travel{
 		From: this.GetString("from"),
 		To: this.GetString("to"),
 		FromPlaceId: this.GetString("fromPlaceId"),
 		ToPlaceId: this.GetString("toPlaceId"),
 		UserId: user.Id,
-		StartTime: this.GetString("startTime"),
-		EndTime: this.GetString("endTime"),
+		StartTime: startTime,
+		EndTime: endTime,
 		People: people,
 	}
 
